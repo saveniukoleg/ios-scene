@@ -24,7 +24,7 @@
 
     <div id="ios-initial" style="top: 0; left: 0; right:0; bottom: 0; background: #000; position: absolute;">
         <div id="text-wrapper" style="top: 50%; left: 50%; position: absolute; color: #fff; transform: translate(-50%, -50%); text-align: center;
-                text-transform: uppercase; font-family: Arial, Helvetica, sans-serif;
+                text-transform: uppercase; font-family: Arial, Helvetica, sans-serif; font-weight: 700; line-height: 1.25em;
             ">
             Click here to view the experience
         </div>
@@ -409,8 +409,8 @@
         const iosInitial = document.getElementById('ios-initial');
         console.log(iosInitial)
         iosInitial.addEventListener('click', () => {
-            document.body.removeChild(iosInitial);
             initiateExperience();
+            document.body.removeChild(iosInitial);
         });
     </script>
 
