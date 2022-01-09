@@ -41,7 +41,7 @@
 
               var contentPromises = [];      
       
-              let audioInitialized = false;
+              let contentInitialized = false;
               let barcodesSound = new Map();
               let patternsSound = new Map();
               let barcodesID = [];
@@ -304,7 +304,7 @@
                 Promise.all(contentPromises)
                     .then(() => {
                         console.log('Most of the content loaded')
-                        audioInitialized = true;
+                        contentInitialized = true;
                     });
 
                 // Добавляем главный контейнер на сцену
@@ -344,7 +344,7 @@
             function update() {
                 if (arToolkitSource.ready !== false) {
                     arToolkitContext.update(arToolkitSource.domElement);
-                    if (audioInitialized) {
+                    if (contentInitialized) {
                         if (barcodesID.length) {
                             barcodesID.forEach((elem, index) => {
                                 if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent) {
