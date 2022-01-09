@@ -304,7 +304,7 @@
                 Promise.all(contentPromises)
                     .then(() => {
                         console.log('Most of the content loaded')
-                        audioInitialized = !audioInitialized;
+                        audioInitialized = true;
                     });
 
                 // Добавляем главный контейнер на сцену
