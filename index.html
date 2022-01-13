@@ -8,6 +8,9 @@
     <script src='js/three.js'></script>
     <script src='js/OBJLoader.js'></script>
     <script src='js/MTLLoader.js'></script>
+    <script src='js/FBXLoader.js'></script>
+    <script src='js/GLTF2Loader.js'></script>
+    <script src='js/GLTFLoader.js'></script>
     <!-- Библиотека tween.js -->
     <script src="js/tween.umd.js"></script>
     <!-- Добавляем jsartookit -->
@@ -140,31 +143,31 @@
 
                 // Массив имён файлов .patt. Массив заполняется в порядке добавления маркеров
                 // если вместо .patt был добавлен баркод, на его место в массив добавляется пустая строка
-                const patternNames = ["pattern-m1.patt", "pattern-m2.patt", "pattern-m3.patt"];
+                const patternNames = ["pattern-m1.patt", "pattern-m2.patt", "pattern-m3.patt", ""];
                 // Maссив баркодов, заполняется одновременно с массивом паттернов
                 // если вместо баркода был добавлен .patt, на его место в массив добавляется -1
-                const patternBarcode = [-1, -1, -1];
+                const patternBarcode = [-1, -1, -1, 0];
                 // Массив типов контента для каждого маркера, заполняется значиями: изображение, модель, видео
-                const modes = ["video", "image", "image"];
+                const modes = ["video", "image", "image", "model"];
                 // Массив файлов моделей, если нет модели будет добавлена пустая строка
-                const modelFiles = ["", "", ""];
+                const modelFiles = ["", "", "", "model.glb"];
                 // Массив файлов изображений, если нет изображения будет добавлена пустая строка
-                const imageFiles = ["", "", ""];
+                const imageFiles = ["", "", "", ""];
                 // Массив файлов видео, если нет видео будет добавлена пустая строка
-                const videoFiles = ["videoplayback.mp4", "", ""];
+                const videoFiles = ["videoplayback.mp4", "", "", ""];
                 // Массив файлов аудио, если нет аудио будет добавлена пустая строка
-                const audioFiles = ["", "Abba — Money, Money, Money.mp3", "Rammstein — Du hast.mp3"];
+                const audioFiles = ["", "Abba — Money, Money, Money.mp3", "Rammstein — Du hast.mp3", ""];
                 // Массив опций повтора аудио и видео контента, по дефолту для всех будет false
-                const repeatOptions = ["true", "true", "true"];
+                const repeatOptions = ["true", "true", "true", ""];
 
                 // Создаём массив для всех маркеров
                 const markerRoots = [];
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 4; i++) {
                     markerRoots[i] = new THREE.Group();
                 }
 
                 // Проходимся по каждому маркеру из массива и добавляем его в главный контейнер 
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 4; i++) {
                     mainContainer.add(markerRoots[i]);
 
                     // Если текущий маркер это баркод, создаём AR контроллер под баркод
@@ -190,24 +193,29 @@
 
                             // Загружаем MTL модель
                             contentPromises.push(new Promise((resolve) => {
-                                new THREE.MTLLoader()
-                                    .load(`${modelFiles[i]}.mtl`, function (materials) {
-                                        materials.preload();
-                                        // Загружаем OBJ модель
-                                        new THREE.OBJLoader()
-                                            .setMaterials(materials)
-                                            .load(`${modelFiles[i]}.obj`, function (group) {
-                                                let mesh0 = group.children[0];
-                                                mesh0.material.side = THREE.DoubleSide;
-                                                // Уменьшаем модель в 20 раз
-                                                mesh0.scale.set(0.05, 0.05, 0.05);
-                                                // Поворачивает модель на -90 градусов по оси OX
-                                                mesh0.rotation.set(Math.PI / -2, 0, 0);
-                                                // Добавляем модель в контейнер
-                                                markerRoots[i].add(mesh0);
-                                                resolve(modelFiles[i])
-                                            }, onProgress, onError);
-                                    });
+                                // new THREE.MTLLoader()
+                                //     .load(`${modelFiles[i]}.mtl`, function (materials) {
+                                //         materials.preload();
+                                //         // Загружаем OBJ модель
+                                //         new THREE.OBJLoader()
+                                //             .setMaterials(materials)
+                                //             .load(`${modelFiles[i]}.obj`, function (group) {
+                                //                 let mesh0 = group.children[0];
+                                //                 mesh0.material.side = THREE.DoubleSide;
+                                //                 // Уменьшаем модель в 20 раз
+                                //                 mesh0.scale.set(0.05, 0.05, 0.05);
+                                //                 // Поворачивает модель на -90 градусов по оси OX
+                                //                 mesh0.rotation.set(Math.PI / -2, 0, 0);
+                                //                 // Добавляем модель в контейнер
+                                //                 markerRoots[i].add(mesh0);
+                                //                 resolve(modelFiles[i])
+                                //             }, onProgress, onError);
+                                //     });
+                                new THREE.GLTF2Loader().load(`${modelFiles[i]}`, (e) => {
+                                    console.log(e)
+                                    markerRoots[i].add(e.scene);
+                                });
+                                
                             }).then((file) => {
                                 console.log(`${file} loaded`)
                             }))
@@ -410,7 +418,6 @@
         }
 
         const iosInitial = document.getElementById('ios-initial');
-        console.log(iosInitial)
         iosInitial.addEventListener('click', () => {
             initiateExperience();
             document.body.removeChild(iosInitial);
