@@ -213,7 +213,9 @@
                                 //     });
                                 new THREE.GLTF2Loader().load(`${modelFiles[i]}`, (e) => {
                                     console.log(e)
-                                    markerRoots[i].add(e.scene);
+                                    markerRoots[i].add(e.scene.children[0]);
+                                    console.log(markerRoots[i])
+                                    resolve(modelFiles[i])
                                 });
                                 
                             }).then((file) => {
