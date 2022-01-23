@@ -367,7 +367,8 @@
 
             // Обновляем AR контент на каждый кадр
 
-            //  SOMETHING STANGE IS HAPPENING HERE "MONSTER PLAYS EVERY TIME"
+            //  SOMETHING STRANGE IS HAPPENING HERE - "MONSTER PLAYS EVERY TIME"
+            // also set canvas user-select pointer to none
             function update() {
                 if (arToolkitSource.ready !== false) {
                     arToolkitContext.update(arToolkitSource.domElement);
