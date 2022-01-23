@@ -33,7 +33,20 @@
         </div>
     </div>
 
+    <div id="loader" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff; pointer-events: none; user-select: none;
+        transition: all .2s linear; display: none;">
+        <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); text-align: center; width: 130px; height: 165px;
+            font-family: Arial, Helvetica, sans-serif; font-weight: 400; line-height: 1.5em; font-size: large;" class="spinner-wrapper">
+            <img style="width: 130px; height: 130px;" src="images/spin.gif" alt="spin gif">
+            <br>
+            Loading...
+        </div>
+    </div>
+
     <script>
+        const iosInitial = document.getElementById('ios-initial');
+        const loader = document.getElementById('loader');
+
         function initiateExperience() {
             // Объявляем глобальные переменные
             var scene, camera, renderer, clock, deltaTime, totalTime;
@@ -316,6 +329,7 @@
                     .then(() => {
                         console.log('Most of the content loaded')
                         contentInitialized = true;
+                        loader.style.opacity = '0';
                     });
 
                 // Добавляем главный контейнер на сцену
@@ -409,11 +423,10 @@
             }
         }
 
-        const iosInitial = document.getElementById('ios-initial');
-        console.log(iosInitial)
         iosInitial.addEventListener('click', () => {
             initiateExperience();
             document.body.removeChild(iosInitial);
+            loader.style.display = 'block';
         });
     </script>
 
