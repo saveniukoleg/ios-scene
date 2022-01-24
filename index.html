@@ -252,6 +252,7 @@
                             let geometry2 = new THREE.PlaneBufferGeometry(2, 2, 4, 4);
                             // Объявляем и загружаем видео
                             let video = document.createElement('video');
+                            video.playsInline = true;
                             video.src = `${videoFiles[i]}`;
                             // Устанавлием видео на автоповтор в зависимости от значения в массиве
                             if (repeatOptions[i]) {
